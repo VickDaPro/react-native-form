@@ -5,18 +5,28 @@ import Screen from "../components/Screen";
 import AppButton from "../components/AppButton";
 import AppTextInput from "../components/AppTextInput";
 
-const LoginScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation }) => {
+  const [name, setName] = useState();
   const [email, setEmail] = useState();
+  const [mobileNumber, setMobileNumber] = useState();
   const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
 
   const onSubmit = async () => {
     let items = {
-      email: email,
+      countrycode: "undefined",
+      fName: name,
+      jrmName: "undefined",
+      jrmId: "undefined",
+      lName: "undefined",
+      mail: email,
+      mobile: mobileNumber,
+      mobile2: mobileNumber,
       password: password,
     };
     console.log(items);
 
-    let result = await fetch("http://backend.jokester.co.in/sellerLogin", {
+    let result = await fetch("http://backend.jokester.co.in/sellerRege", {
       method: "POST",
       body: JSON.stringify(items),
       headers: {
@@ -26,12 +36,20 @@ const LoginScreen = ({ navigation }) => {
     });
     result = await result.json();
     console.log("Result", result);
-    navigation.navigate("Home");
+    navigation.navigate("Login");
   };
 
   return (
     <Screen style={styles.container}>
       <Image style={styles.logo} source={require("../assets/logo-red.png")} />
+      <AppTextInput
+        autoCapitalize="none"
+        autoCorrect={false}
+        autoComplete={false}
+        icon="account"
+        placeholder="Full name"
+        onChangeText={(text) => setName(text)}
+      />
       <AppTextInput
         autoCapitalize="none"
         autoComplete={false}
@@ -43,6 +61,14 @@ const LoginScreen = ({ navigation }) => {
       />
       <AppTextInput
         autoCapitalize="none"
+        autoComplete={false}
+        icon="phone"
+        keyboardType="numeric"
+        placeholder="Mobile Number"
+        onChangeText={(text) => setMobileNumber(text)}
+      />
+      <AppTextInput
+        autoCapitalize="none"
         autoCorrect={false}
         icon="lock"
         placeholder="Password"
@@ -50,14 +76,23 @@ const LoginScreen = ({ navigation }) => {
         textContentType="password"
         onChangeText={(text) => setPassword(text)}
       />
+      <AppTextInput
+        autoCapitalize="none"
+        autoCorrect={false}
+        icon="lock"
+        placeholder="Confirm Password"
+        secureTextEntry
+        textContentType="password"
+        onChangeText={(text) => setConfirmPassword(text)}
+      />
       <View style={styles.button}>
-        <AppButton title="Login" onPress={onSubmit} />
+        <AppButton title="Register" onPress={onSubmit} />
       </View>
     </Screen>
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
   container: {
